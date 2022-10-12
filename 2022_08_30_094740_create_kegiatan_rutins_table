@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateKegiatanRutinsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('kegiatan_rutins', function (Blueprint $table) {
+            $table->increments('id_kegiatan');
+            $table->date('tanggal');
+            $table->time('waktu');
+            $table->string('id_layanankesehatan');
+            $table->string('tempat');
+            $table->string('keterangan');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('kegiatan_rutins');
+    }
+}
