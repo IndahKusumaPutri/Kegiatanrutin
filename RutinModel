@@ -1,0 +1,18 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class rutin extends Model
+{
+    public $timestamps = false;
+    protected $table = 'kegiatan_rutins';
+    protected $fillable = ['tanggal','waktu','id_layanankesehatan','tempat','keterangan'];
+
+    public function lakes()
+    {
+        return $this->belongsTo('App\lakes','id_layanankesehatan','id_layanankesehatan');
+    }
+
+}
