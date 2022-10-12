@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\rutin;
+use App\lakes;  
+
+class RutinController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $rutin = Rutin::all();
+
+        $lakes = Lakes::all();
+        return view('rutin.index',compact('rutin','lakes'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $rutin = \App\Rutin::all();
+
+        $lakes = \App\Lakes::all();
+        return view('rutin.create',compact('rutin','lakes'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request,[
+            'tanggal' => 'required',
+            'waktu' => 'required',
+            'id_layanankesehatan' => 'required',
+            'tempat' => 'required',
+            'keterangan' => 'required',
+        ]);
+
+        Rutin::create($request->all()); 
+
+        return redirect()->route('rutin.index')->with('Data ditambah','Data berhasil ditambah');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $rutin = Rutin::where('id_kegiatan',$id)->first();  
+
+        $lakes = Lakes::where('id_layanankesehatan',$id)->first();   
+
+        return view('rutin.show',compact('rutin','lakes'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $rutin = Rutin::where('id_kegiatan',$id)->first(); 
+        
+        $lakes = Lakes::where('id_layanankesehatan',$id)->first();
+        return view('rutin.edit',compact('rutin','lakes'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,[
+            'tanggal' => 'required',
+            'waktu' => 'required',
+            'id_layanankesehatan' => 'required',
+            'tempat' => 'required',
+            'keterangan' => 'required',
+
+        ]);
+
+        Rutin::where('id_kegiatan',$id)->update([
+            'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu,
+            'id_layanankesehatan' => $request->id_layanankesehatan,
+            'tempat' => $request->tempat,
+            'keterangan' => $request->keterangan,
+
+        ]);
+        
+        return redirect()->route('rutin.index')->with('Data diedit','Data berhasil diedit');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Rutin::where('id_kegiatan',$id)->delete(); 
+        return redirect()->route('rutin.index')->with('Data dihapus','Data berhasil dihapus');
+    }
+
+    public function cetakRutin()
+    {
+        $cetakrutin = Rutin::all();
+        return view('rutin.cetakrutin',compact('cetakrutin'));
+    }
+}
